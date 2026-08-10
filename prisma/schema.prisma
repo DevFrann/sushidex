@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SushiType {
+  NIGIRI
+  MAKI
+  HOSOMAKI
+  FUTOMAKI
+  URAMAKI
+  TEMAKI
+  GUNKAN
+  SASHIMI
+  INARI
+  CHIRASHI
+}
+
+enum SpicyLevel {
+  NONE
+  MILD
+  MEDIUM
+  HIGH
+}
+
+enum FlavorIntensity {
+  DELICATE
+  BALANCED
+  BOLD
+}
+
+model Sushi {
+  id              String          @id @default(cuid())
+  name            String
+  slug            String          @unique
+  japaneseName    String?
+  description     String          @db.Text
+  type            SushiType
+  ingredients     String[]
+  aliases         String[]
+  rawFish         Boolean
+  spicyLevel      SpicyLevel      @default(NONE)
+  flavorIntensity FlavorIntensity @default(BALANCED)
+  texture         String
+  imageUrl        String?
+  origin          String
+  popularity      Int             @default(50)
+  searchTerms     String          @db.Text
+
+  @@index([type])
+  @@index([popularity(sort: Desc)])
+  @@index([slug])
+}

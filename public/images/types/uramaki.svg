@@ -1,0 +1,17 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F6F0E7"/>
+  <circle cx="210" cy="180" r="140" fill="#F3DED2"/>
+  <circle cx="1020" cy="740" r="170" fill="#E7ECDD"/>
+  <rect x="160" y="300" width="880" height="260" rx="130" fill="#FFF7EE"/>
+  <circle cx="350" cy="430" r="104" fill="#F6F0E4"/>
+  <circle cx="350" cy="430" r="72" fill="#2B332D"/>
+  <circle cx="350" cy="430" r="42" fill="#9BC4A2"/>
+  <circle cx="600" cy="430" r="104" fill="#F6F0E4"/>
+  <circle cx="600" cy="430" r="72" fill="#2B332D"/>
+  <circle cx="600" cy="430" r="42" fill="#D97857"/>
+  <circle cx="850" cy="430" r="104" fill="#F6F0E4"/>
+  <circle cx="850" cy="430" r="72" fill="#2B332D"/>
+  <circle cx="850" cy="430" r="42" fill="#F0D77A"/>
+  <text x="90" y="770" fill="#1B1917" font-family="Arial, sans-serif" font-size="92" font-weight="700">Uramaki</text>
+  <text x="94" y="835" fill="#6B655C" font-family="Arial, sans-serif" font-size="32">Roll invertido con el arroz por fuera</text>
+</svg>

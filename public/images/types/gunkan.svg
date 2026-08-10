@@ -1,0 +1,15 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F7F2E9"/>
+  <circle cx="180" cy="170" r="140" fill="#E7EEE2"/>
+  <rect x="220" y="260" width="300" height="360" rx="120" fill="#25312B"/>
+  <rect x="340" y="220" width="300" height="400" rx="120" fill="#25312B"/>
+  <rect x="700" y="290" width="300" height="340" rx="120" fill="#25312B"/>
+  <path d="M250 390C250 332.562 296.562 286 354 286H386C443.438 286 490 332.562 490 390V520C490 545.405 469.405 566 444 566H296C270.595 566 250 545.405 250 520V390Z" fill="#FFF7EE"/>
+  <path d="M370 350C370 292.562 416.562 246 474 246H506C563.438 246 610 292.562 610 350V520C610 545.405 589.405 566 564 566H416C390.595 566 370 545.405 370 520V350Z" fill="#FFF7EE"/>
+  <path d="M730 410C730 352.562 776.562 306 834 306H866C923.438 306 970 352.562 970 410V530C970 555.405 949.405 576 924 576H776C750.595 576 730 555.405 730 530V410Z" fill="#FFF7EE"/>
+  <circle cx="370" cy="310" r="76" fill="#D97857"/>
+  <circle cx="490" cy="272" r="76" fill="#D54E41"/>
+  <circle cx="850" cy="340" r="76" fill="#A8D38D"/>
+  <text x="90" y="770" fill="#1B1917" font-family="Arial, sans-serif" font-size="92" font-weight="700">Gunkan</text>
+  <text x="94" y="835" fill="#6B655C" font-family="Arial, sans-serif" font-size="32">Arroz rodeado por nori para sujetar toppings</text>
+</svg>

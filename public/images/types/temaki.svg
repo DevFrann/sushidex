@@ -1,0 +1,11 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F7F2EA"/>
+  <circle cx="1010" cy="170" r="150" fill="#E8DCCB"/>
+  <path d="M450 620L680 180L900 620C903 626 899 633 892 633H458C451 633 447 626 450 620Z" fill="#26322D"/>
+  <path d="M575 440L681 240L786 440H575Z" fill="#FFF7EE"/>
+  <circle cx="620" cy="382" r="34" fill="#D97857"/>
+  <circle cx="684" cy="350" r="30" fill="#8FC6B0"/>
+  <circle cx="736" cy="392" r="30" fill="#F0D77A"/>
+  <text x="90" y="770" fill="#1B1917" font-family="Arial, sans-serif" font-size="92" font-weight="700">Temaki</text>
+  <text x="94" y="835" fill="#6B655C" font-family="Arial, sans-serif" font-size="32">Cono de nori relleno de arroz y toppings</text>
+</svg>
