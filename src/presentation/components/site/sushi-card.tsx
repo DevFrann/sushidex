@@ -24,9 +24,6 @@ export function SushiCard({ sushi }: { sushi: Sushi }) {
               {typeLabels[sushi.type]}
             </p>
             <h3 className="mt-2 text-xl font-semibold">{sushi.name}</h3>
-            {sushi.japaneseName ? (
-              <p className="mt-1 text-sm text-white/80">{sushi.japaneseName}</p>
-            ) : null}
           </div>
         </div>
         <CardContent className="space-y-4">

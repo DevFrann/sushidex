@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getTypeFromSlug, typeDescriptions, typeLabels, typeSlugs } from "@/domain/entities/sushi";
 import { getSushiRepository } from "@/infrastructure/repositories";
+import { SiteHeader } from "@/presentation/components/site/site-header";
 import { SushiCard } from "@/presentation/components/site/sushi-card";
 import { Badge } from "@/presentation/components/ui/badge";
 
@@ -51,16 +51,10 @@ export default async function TypePage({ params }: TypePageProps) {
   const sushiItems = await getSushiRepository().findByType(type);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-[36px] border border-white/60 bg-white/65 p-6 shadow-soft backdrop-blur sm:p-8 lg:p-10">
-        <div className="flex flex-wrap items-center gap-3 text-sm text-stone-600">
-          <Link href="/" className="transition-colors hover:text-stone-950">
-            Inicio
-          </Link>
-          <span>/</span>
-          <span className="text-stone-950">{typeLabels[type]}</span>
-        </div>
-        <section className="mt-8 space-y-6">
+    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+      <SiteHeader backHref="/" backLabel="Volver al inicio" />
+      <div className="mt-4 rounded-[36px] border border-white/60 bg-white/65 p-6 shadow-soft backdrop-blur sm:p-8 lg:p-10">
+        <section className="space-y-6">
           <Badge className="w-fit bg-[var(--accent-soft)] text-stone-900">
             Tipo de sushi
           </Badge>

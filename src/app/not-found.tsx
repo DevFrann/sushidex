@@ -1,12 +1,15 @@
 import Link from "next/link";
 
+import { SushiDexLogo } from "@/presentation/components/site/sushidex-logo";
+
 export default function NotFound() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-3xl items-center px-4 py-8 sm:px-6">
       <div className="w-full rounded-[36px] border border-stone-200 bg-white/80 p-10 text-center shadow-soft">
-        <p className="text-xs uppercase tracking-[0.24em] text-stone-500">
-          SushiDex
-        </p>
+        <div className="flex items-center justify-center gap-2 font-semibold tracking-[0.08em] text-[#123f46]">
+          <SushiDexLogo className="h-11 w-11" />
+          <span>SushiDex</span>
+        </div>
         <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl text-stone-950">
           Esa ficha no existe
         </h1>

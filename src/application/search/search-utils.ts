@@ -190,7 +190,7 @@ export function getSearchMatchLabel(sushi: Sushi, query: string) {
   const tokens = buildSearchTokens(query);
 
   if (!normalizedQuery) {
-    return sushi.japaneseName ?? sushi.ingredients.slice(0, 3).join(", ");
+    return sushi.ingredients.slice(0, 3).join(", ");
   }
 
   const aliasMatch = sushi.aliases.find((alias) => {
@@ -219,5 +219,5 @@ export function getSearchMatchLabel(sushi: Sushi, query: string) {
     return `Ingrediente: ${ingredientMatch}`;
   }
 
-  return sushi.japaneseName ?? sushi.ingredients.slice(0, 3).join(", ");
+  return sushi.ingredients.slice(0, 3).join(", ");
 }

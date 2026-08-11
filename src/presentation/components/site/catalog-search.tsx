@@ -82,7 +82,7 @@ export function CatalogSearch({
 
   return (
     <div className="space-y-10">
-      <section className="space-y-6">
+      <section id="buscar" className="scroll-mt-28 space-y-6">
         <Badge className="w-fit bg-[var(--accent-soft)] text-stone-900">
           Diccionario visual de sushi
         </Badge>
@@ -148,14 +148,20 @@ export function CatalogSearch({
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
-              {deferredQuery ? "Resultados" : "Populares"}
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold text-stone-950">
-              {deferredQuery
-                ? `Coincidencias para "${deferredQuery}"`
-                : "Empieza por los nombres mas habituales"}
-            </h2>
+            {deferredQuery ? (
+              <>
+                <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+                  Resultados
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-stone-950">
+                  Coincidencias para &quot;{deferredQuery}&quot;
+                </h2>
+              </>
+            ) : (
+              <h2 className="text-xs uppercase tracking-[0.22em] text-stone-500">
+                Populares
+              </h2>
+            )}
           </div>
           {isLoading ? (
             <p className="text-sm text-stone-500">Buscando...</p>

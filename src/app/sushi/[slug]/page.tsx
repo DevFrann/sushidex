@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getSushiRepository } from "@/infrastructure/repositories";
@@ -12,6 +11,7 @@ import {
 import { Badge } from "@/presentation/components/ui/badge";
 import { Separator } from "@/presentation/components/ui/separator";
 import { SushiIndicators } from "@/presentation/components/site/sushi-indicators";
+import { SiteHeader } from "@/presentation/components/site/site-header";
 import { SushiCard } from "@/presentation/components/site/sushi-card";
 
 interface SushiPageProps {
@@ -63,24 +63,13 @@ export default async function SushiPage({ params }: SushiPageProps) {
     .slice(0, 3);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-[36px] border border-white/60 bg-white/65 p-6 shadow-soft backdrop-blur sm:p-8 lg:p-10">
-        <div className="flex flex-wrap items-center gap-3 text-sm text-stone-600">
-          <Link href="/" className="transition-colors hover:text-stone-950">
-            Inicio
-          </Link>
-          <span>/</span>
-          <Link
-            href={`/tipos/${typeSlugs[sushi.type]}`}
-            className="transition-colors hover:text-stone-950"
-          >
-            {typeLabels[sushi.type]}
-          </Link>
-          <span>/</span>
-          <span className="text-stone-950">{sushi.name}</span>
-        </div>
-
-        <section className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+      <SiteHeader
+        backHref={`/tipos/${typeSlugs[sushi.type]}`}
+        backLabel={`Explorar ${typeLabels[sushi.type]}`}
+      />
+      <div className="mt-4 rounded-[36px] border border-white/60 bg-white/65 p-6 shadow-soft backdrop-blur sm:p-8 lg:p-10">
+        <section className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
           <div className="space-y-6">
             <Badge className="w-fit bg-[var(--accent-soft)] text-stone-900">
               {typeLabels[sushi.type]}
@@ -89,9 +78,6 @@ export default async function SushiPage({ params }: SushiPageProps) {
               <h1 className="font-[family-name:var(--font-display)] text-4xl leading-tight text-stone-950 sm:text-5xl">
                 {sushi.name}
               </h1>
-              {sushi.japaneseName ? (
-                <p className="mt-3 text-lg text-stone-600">{sushi.japaneseName}</p>
-              ) : null}
             </div>
             <p className="max-w-2xl text-base leading-8 text-stone-700 sm:text-lg">
               {sushi.shortDescription}
