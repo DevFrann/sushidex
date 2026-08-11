@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { getSushiByType } from "@/application/catalog/sushi-catalog";
 import { getTypeFromSlug, typeDescriptions, typeLabels, typeSlugs } from "@/domain/entities/sushi";
-import { getSushiRepository } from "@/infrastructure/repositories";
 import { SiteHeader } from "@/presentation/components/site/site-header";
 import { SushiCard } from "@/presentation/components/site/sushi-card";
 import { Badge } from "@/presentation/components/ui/badge";
@@ -48,7 +48,7 @@ export default async function TypePage({ params }: TypePageProps) {
     notFound();
   }
 
-  const sushiItems = await getSushiRepository().findByType(type);
+  const sushiItems = getSushiByType(type);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">

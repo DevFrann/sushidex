@@ -1,6 +1,6 @@
 # SushiDex
 
-SushiDex es un diccionario visual de sushi pensado para gente que esta consultando una carta online y necesita entender rapido que significa cada nombre. En lugar de buscar "Dragon Roll", "Sake Nigiri" o "Gunkan" uno por uno en Google, la aplicacion centraliza el catalogo y permite localizar resultados por nombre, alias, termino japones o ingredientes.
+SushiDex es un diccionario visual de sushi pensado para quien consulta una carta online y necesita entender rapidamente que significa cada nombre. En lugar de buscar "Dragon Roll", "Sake Nigiri" o "Gunkan" uno por uno, la aplicacion permite localizar platos por nombre, alias, termino japones o ingredientes.
 
 ## Problema que resuelve
 
@@ -10,151 +10,111 @@ SushiDex es un diccionario visual de sushi pensado para gente que esta consultan
 
 ## Stack
 
-- Next.js 16 con App Router
+- Next.js 16 con App Router y exportacion estatica
 - TypeScript
 - Tailwind CSS 4
 - shadcn/ui como base de componentes
-- PostgreSQL
-- Prisma ORM 7
+- Catalogo TypeScript local
+- Imagenes WebP optimizadas
+
+La aplicacion no necesita servidor, API ni base de datos en produccion.
 
 ## Arquitectura
 
-Se ha mantenido una arquitectura limpia ligera, centrada en un unico agregado `Sushi`:
+Se mantiene una arquitectura limpia ligera, centrada en el agregado `Sushi`:
 
-- `src/domain`
-  Contiene la entidad `Sushi`, enums, labels y el contrato `SushiRepository`.
-- `src/application`
-  Casos de uso y logica de busqueda/ranking.
-- `src/infrastructure`
-  Prisma, repositorios, seed compartido y fallback estatico.
-- `src/presentation`
-  Componentes de UI, cards, buscador y utilidades visuales.
-- `src/app`
-  Rutas del App Router, metadata, sitemap y API de autocomplete.
+- `src/domain`: entidad `Sushi`, tipos y reglas del dominio.
+- `src/application`: acceso al catalogo y logica de busqueda y ranking.
+- `src/infrastructure/seed`: fuente unica de datos del catalogo.
+- `src/presentation`: componentes de interfaz, tarjetas y buscadores.
+- `src/app`: rutas del App Router, metadata, sitemap y robots.
+
+`next build` ejecuta los Server Components durante la compilacion y genera un archivo HTML por ruta en `out`. La busqueda principal funciona en el navegador y la cabecera carga un unico `search-index.json`, generado desde `sushi-seed-data.ts` durante el build. No hay API ni procesamiento en servidor.
 
 ## MVP incluido
 
-- Home mobile-first centrada en el buscador "¿Que sushi quieres buscar?"
-- Autocomplete inmediato via `/api/search`
-- Fichas SEO por sushi:
-  - `/sushi/dragon-roll`
-  - `/sushi/california-roll`
-  - `/sushi/sake-nigiri`
-- Paginas por tipo:
-  - `/tipos/nigiri`
-  - `/tipos/maki`
-  - `/tipos/uramaki`
-  - `/tipos/temaki`
-- Metadata dinamica y sitemap
-- Seed inicial con 150 entradas comunes en cartas de restaurantes japoneses en Espana y Europa
-- Busqueda tolerante a:
-  - orden distinto de palabras
-  - alias ingles/espanol
-  - terminos japoneses frecuentes
-  - consultas por ingredientes
+- Home mobile-first centrada en la busqueda.
+- Autocomplete inmediato en cliente.
+- Fichas SEO para las 150 entradas en `/sushi/[slug]`.
+- Paginas estaticas por tipo en `/tipos/[typeSlug]`.
+- Metadata, sitemap y robots generados durante el build.
+- Busqueda tolerante a orden de palabras, alias, terminos japoneses e ingredientes.
+- Fotografias WebP de 1200x900 optimizadas para publicacion.
 
 ## Datos
 
-La fuente inicial vive en `src/infrastructure/seed/sushi-seed-data.ts`.
+La unica fuente de datos vive en:
 
-- El mismo catalogo alimenta el fallback estatico del MVP y el seed de Prisma.
-- El catalogo se divide en Nigiri, Maki, Hosomaki, Futomaki, Uramaki, Temaki, Gunkan, Sashimi, Inari, Chirashi y Rolls occidentales.
-- Cuando una composicion no es universal, se marca explicitamente con:
-  `Puede variar dependiendo del restaurante.`
+```text
+src/infrastructure/seed/sushi-seed-data.ts
+```
+
+El catalogo contiene 150 entradas divididas en Nigiri, Maki, Hosomaki, Futomaki, Uramaki, Temaki, Gunkan, Sashimi, Inari, Chirashi y Rolls occidentales. Cuando una composicion no es universal se indica:
+
+```text
+Puede variar dependiendo del restaurante.
+```
+
+Para modificar el catalogo, edita ese archivo y vuelve a ejecutar `npm run build`. No hay migraciones ni seed de base de datos.
 
 ## Ejecucion local
 
-1. Instala dependencias:
+1. Instala las dependencias:
 
 ```bash
 npm install
 ```
 
-2. Copia las variables de entorno:
+2. Crea `.env` a partir de `.env.example` si quieres definir la URL canonica:
 
 ```bash
 copy .env.example .env
 ```
 
-3. Ajusta `DATABASE_URL` a tu PostgreSQL local o remoto.
-
-4. Genera el cliente Prisma:
-
-```bash
-npm run db:generate
-```
-
-5. Aplica la migracion en tu base:
-
-```bash
-npm run db:migrate -- --name init
-```
-
-6. Carga el seed:
-
-```bash
-npm run db:seed
-```
-
-7. Arranca la aplicacion:
+3. Arranca el entorno de desarrollo:
 
 ```bash
 npm run dev
 ```
 
+La aplicacion estara disponible en `http://localhost:3000`.
+
+## Build estatico
+
+Genera la web completa con:
+
+```bash
+npm run build
+```
+
+El resultado se guarda en `out` y puede publicarse en cualquier hosting de archivos estaticos. Para revisarlo localmente:
+
+```bash
+npx serve out
+```
+
 ## Variables de entorno
 
-Archivo de referencia: `.env.example`
-
-- `DATABASE_URL`
-  Conexion PostgreSQL usada por Prisma.
-- `NEXT_PUBLIC_SITE_URL`
-  URL base para metadata canonica, sitemap y robots.
-
-## Prisma y PostgreSQL
-
-### Crear la base
-
-Puedes usar cualquier PostgreSQL compatible. Ejemplo local:
+Solo existe una variable opcional:
 
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/sushidex?schema=public"
+NEXT_PUBLIC_SITE_URL="https://sushidex.app"
 ```
 
-### Migrations
+Se utiliza al compilar la metadata canonica, `sitemap.xml` y `robots.txt`. En produccion debe contener la URL publica definitiva y estar disponible durante `npm run build`.
 
-- Generar cliente:
+## Despliegue en Cloudflare
 
-```bash
-npm run db:generate
-```
+Puedes conectar el repositorio desde Cloudflare y usar:
 
-- Crear o actualizar migracion en desarrollo:
+- Comando de build: `npm run build`
+- Directorio de salida: `out`
+- Variable de build: `NEXT_PUBLIC_SITE_URL=https://sushidex.app`
 
-```bash
-npm run db:migrate -- --name init
-```
+Al ser una exportacion estatica no se necesitan secretos, Workers dinamicos ni conexiones externas.
 
-- Sin crear migracion, sincronizar esquema:
-
-```bash
-npm run db:push
-```
-
-### Seed
-
-```bash
-npm run db:seed
-```
-
-## Notas de desarrollo
-
-- Si `DATABASE_URL` no esta configurada o la base no responde, la aplicacion usa el catalogo estatico del seed para que el frontend siga siendo navegable durante el desarrollo del MVP.
-- Para produccion, la ruta recomendada es ejecutar migraciones y seed sobre PostgreSQL y dejar Prisma como fuente primaria.
-
-## Referencias usadas
+## Referencias
 
 - [Next.js App Router](https://nextjs.org/docs/app)
+- [Static exports de Next.js](https://nextjs.org/docs/app/guides/static-exports)
 - [shadcn/ui para Next.js](https://ui.shadcn.com/docs/installation/next)
-- [Prisma ORM con driver adapters](https://docs.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction)
-- [PostgreSQL connector en Prisma](https://docs.prisma.io/docs/orm/core-concepts/supported-databases/postgresql)

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 
+import { searchSushis } from "@/application/search/search-sushis";
 import { getSearchMatchLabel } from "@/application/search/search-utils";
 import type { Sushi } from "@/domain/entities/sushi";
 
@@ -12,13 +13,9 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { SushiCard } from "./sushi-card";
 
-type SearchResponse = {
-  query: string;
-  results: Sushi[];
-};
-
 interface CatalogSearchProps {
   popularSushi: Sushi[];
+  sushiCatalog: Sushi[];
   totalSushi: number;
   types: Array<{
     id: string;
@@ -30,52 +27,16 @@ interface CatalogSearchProps {
 
 export function CatalogSearch({
   popularSushi,
+  sushiCatalog,
   totalSushi,
   types,
 }: CatalogSearchProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Sushi[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const deferredQuery = useDeferredValue(query.trim());
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function runSearch() {
-      if (!deferredQuery) {
-        setResults([]);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-
-      const response = await fetch(
-        `/api/search?q=${encodeURIComponent(deferredQuery)}`,
-        {
-          cache: "no-store",
-        },
-      );
-
-      if (!response.ok || cancelled) {
-        setIsLoading(false);
-        return;
-      }
-
-      const payload = (await response.json()) as SearchResponse;
-
-      if (!cancelled) {
-        setResults(payload.results);
-        setIsLoading(false);
-      }
-    }
-
-    void runSearch();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [deferredQuery]);
+  const results = useMemo(
+    () => searchSushis(sushiCatalog, deferredQuery, 12),
+    [deferredQuery, sushiCatalog],
+  );
 
   const visibleResults = deferredQuery ? results : popularSushi;
   const suggestionResults = useMemo(() => results.slice(0, 5), [results]);
@@ -161,9 +122,6 @@ export function CatalogSearch({
               </h2>
             )}
           </div>
-          {isLoading ? (
-            <p className="text-sm text-stone-500">Buscando...</p>
-          ) : null}
         </div>
         {visibleResults.length === 0 ? (
           <div className="rounded-[28px] border border-dashed border-stone-300 bg-white/60 p-8 text-sm leading-7 text-stone-600">

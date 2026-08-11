@@ -1,5 +1,16 @@
 import type { Sushi } from "@/domain/entities/sushi";
 
+export type SushiSearchItem = Pick<
+  Sushi,
+  | "name"
+  | "slug"
+  | "japaneseName"
+  | "aliases"
+  | "type"
+  | "ingredients"
+  | "popularity"
+>;
+
 const synonymGroups = [
   ["salmon", "sake", "salmones"],
   ["tuna", "atun", "maguro"],
@@ -50,7 +61,7 @@ function buildSearchGroups(query: string) {
     .map((token) => [...new Set(synonymMap.get(token) ?? [token])]);
 }
 
-function getSearchableFields(sushi: Sushi) {
+function getSearchableFields(sushi: SushiSearchItem) {
   return [
     sushi.name,
     sushi.japaneseName,
@@ -105,7 +116,7 @@ function fieldMatchesToken(field: string, token: string) {
   );
 }
 
-export function scoreSushiForQuery(sushi: Sushi, query: string) {
+export function scoreSushiForQuery(sushi: SushiSearchItem, query: string) {
   const normalizedQuery = normalizeSearchText(query);
 
   if (!normalizedQuery) {
@@ -185,7 +196,7 @@ export function scoreSushiForQuery(sushi: Sushi, query: string) {
   return score;
 }
 
-export function getSearchMatchLabel(sushi: Sushi, query: string) {
+export function getSearchMatchLabel(sushi: SushiSearchItem, query: string) {
   const normalizedQuery = normalizeSearchText(query);
   const tokens = buildSearchTokens(query);
 

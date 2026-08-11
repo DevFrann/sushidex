@@ -20,7 +20,7 @@ type CatalogInput = {
   texture: string;
   origin: string;
   popularity?: number;
-  imageUrl?: string | null;
+  imageUrl?: string;
 };
 
 function slugify(value: string) {
@@ -31,19 +31,6 @@ function slugify(value: string) {
     .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-function buildSearchTerms(input: CatalogInput) {
-  return [
-    input.name,
-    input.japaneseName,
-    input.shortDescription,
-    input.type,
-    ...input.ingredients,
-    ...input.aliases,
-  ]
-    .filter(Boolean)
-    .join(" ");
 }
 
 function entry(input: CatalogInput): Sushi {
@@ -64,8 +51,7 @@ function entry(input: CatalogInput): Sushi {
     texture: input.texture,
     origin: input.origin,
     popularity: input.popularity ?? 55,
-    imageUrl: input.imageUrl ?? `/images/sushi/v2/${slug}.png`,
-    searchTerms: buildSearchTerms(input),
+    imageUrl: input.imageUrl ?? `/images/sushi/${slug}.webp`,
   };
 }
 

@@ -1,21 +1,19 @@
-import type { SushiRepository } from "@/domain/repositories/sushi-repository";
+import type { SushiSearchItem } from "./search-utils";
 
 import { scoreSushiForQuery } from "./search-utils";
 
-export async function searchSushis(
-  repository: SushiRepository,
+export function searchSushis<T extends SushiSearchItem>(
+  catalog: readonly T[],
   query: string,
   limit = 12,
-) {
+): T[] {
   const normalizedQuery = query.trim();
 
   if (!normalizedQuery) {
     return [];
   }
 
-  const sushiCatalog = await repository.findAll();
-
-  return sushiCatalog
+  return catalog
     .map((sushi) => ({
       sushi,
       score: scoreSushiForQuery(sushi, normalizedQuery),

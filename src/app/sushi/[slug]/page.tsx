@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { getSushiRepository } from "@/infrastructure/repositories";
+import {
+  getSushiBySlug,
+  getSushiByType,
+  getSushiCatalog,
+} from "@/application/catalog/sushi-catalog";
 import {
   typeLabels,
   typeSlugs,
@@ -20,10 +24,8 @@ interface SushiPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  const catalog = await getSushiRepository().findAll();
-
-  return catalog.map((sushi) => ({
+export function generateStaticParams() {
+  return getSushiCatalog().map((sushi) => ({
     slug: sushi.slug,
   }));
 }
@@ -32,7 +34,7 @@ export async function generateMetadata({
   params,
 }: SushiPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const sushi = await getSushiRepository().findBySlug(slug);
+  const sushi = getSushiBySlug(slug);
 
   if (!sushi) {
     return {
@@ -51,14 +53,13 @@ export async function generateMetadata({
 
 export default async function SushiPage({ params }: SushiPageProps) {
   const { slug } = await params;
-  const repository = getSushiRepository();
-  const sushi = await repository.findBySlug(slug);
+  const sushi = getSushiBySlug(slug);
 
   if (!sushi) {
     notFound();
   }
 
-  const related = (await repository.findByType(sushi.type))
+  const related = getSushiByType(sushi.type)
     .filter((item) => item.slug !== sushi.slug)
     .slice(0, 3);
 
@@ -119,7 +120,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
             <div className="relative overflow-hidden rounded-[32px] border border-stone-200 bg-stone-100">
               <div className="relative aspect-[4/3]">
                 <Image
-                  src={sushi.imageUrl ?? "/images/types/maki.svg"}
+                  src={sushi.imageUrl}
                   alt={sushi.name}
                   fill
                   className="object-cover"

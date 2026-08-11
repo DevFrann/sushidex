@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 
+import { getSushiCatalog } from "@/application/catalog/sushi-catalog";
 import { typeSlugs } from "@/domain/entities/sushi";
-import { getSushiRepository } from "@/infrastructure/repositories";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export const dynamic = "force-static";
+
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const repository = getSushiRepository();
-  const sushiCatalog = await repository.findAll();
+  const sushiCatalog = getSushiCatalog();
 
   return [
     {

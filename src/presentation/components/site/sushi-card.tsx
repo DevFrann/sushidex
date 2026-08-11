@@ -13,7 +13,7 @@ export function SushiCard({ sushi }: { sushi: Sushi }) {
       <Card className="group h-full overflow-hidden transition-transform duration-200 hover:-translate-y-1">
         <div className="relative h-52 overflow-hidden">
           <Image
-            src={sushi.imageUrl ?? "/images/types/maki.svg"}
+            src={sushi.imageUrl}
             alt={sushi.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"

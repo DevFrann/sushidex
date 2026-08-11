@@ -1,22 +1,22 @@
 import { sushiTypes, typeLabels, typeSlugs } from "@/domain/entities/sushi";
-import type { SushiRepository } from "@/domain/repositories/sushi-repository";
 
-export async function getHomeCatalog(repository: SushiRepository) {
-  const [allSushi, popularSushi] = await Promise.all([
-    repository.findAll(),
-    repository.findPopular(12),
-  ]);
+import { getPopularSushi, getSushiCatalog } from "./sushi-catalog";
+
+export function getHomeCatalog() {
+  const sushiCatalog = getSushiCatalog();
+  const popularSushi = getPopularSushi(12);
 
   const types = sushiTypes.map((type) => ({
     id: type,
     label: typeLabels[type],
     slug: typeSlugs[type],
-    count: allSushi.filter((sushi) => sushi.type === type).length,
+    count: sushiCatalog.filter((sushi) => sushi.type === type).length,
   }));
 
   return {
     popularSushi,
+    sushiCatalog,
     types,
-    totalSushi: allSushi.length,
+    totalSushi: sushiCatalog.length,
   };
 }

@@ -32,10 +32,9 @@ export interface Sushi {
   spicyLevel: SpicyLevel;
   flavorIntensity: FlavorIntensity;
   texture: string;
-  imageUrl: string | null;
+  imageUrl: string;
   origin: string;
   popularity: number;
-  searchTerms: string;
 }
 
 export const typeSlugs: Record<SushiType, string> = {

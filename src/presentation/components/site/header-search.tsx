@@ -2,22 +2,24 @@
 
 import { Search, X } from "lucide-react";
 import Link from "next/link";
-import { useDeferredValue, useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 
-import { getSearchMatchLabel } from "@/application/search/search-utils";
-import type { Sushi } from "@/domain/entities/sushi";
+import { searchSushis } from "@/application/search/search-sushis";
+import {
+  getSearchMatchLabel,
+  type SushiSearchItem,
+} from "@/application/search/search-utils";
 import { typeLabels } from "@/presentation/lib/labels";
-
-type SearchResponse = {
-  results: Sushi[];
-};
 
 export function HeaderSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Sushi[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [catalog, setCatalog] = useState<SushiSearchItem[] | null>(null);
   const deferredQuery = useDeferredValue(query.trim());
+  const results = useMemo(
+    () => searchSushis(catalog ?? [], deferredQuery, 6),
+    [catalog, deferredQuery],
+  );
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,46 +52,32 @@ export function HeaderSearch() {
   }, [isOpen]);
 
   useEffect(() => {
-    if (!deferredQuery) {
+    if (!isOpen || catalog) {
       return;
     }
 
     const controller = new AbortController();
 
-    async function runSearch() {
-      setIsLoading(true);
-
+    async function loadCatalog() {
       try {
-        const response = await fetch(
-          `/api/search?q=${encodeURIComponent(deferredQuery)}`,
-          {
-            cache: "no-store",
-            signal: controller.signal,
-          },
+        const response = await fetch("/search-index.json", {
+          signal: controller.signal,
+        });
+
+        setCatalog(
+          response.ok ? ((await response.json()) as SushiSearchItem[]) : [],
         );
-
-        if (!response.ok) {
-          setResults([]);
-          return;
-        }
-
-        const payload = (await response.json()) as SearchResponse;
-        setResults(payload.results.slice(0, 6));
       } catch (error) {
         if (!(error instanceof DOMException && error.name === "AbortError")) {
-          setResults([]);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
+          setCatalog([]);
         }
       }
     }
 
-    void runSearch();
+    void loadCatalog();
 
     return () => controller.abort();
-  }, [deferredQuery]);
+  }, [catalog, isOpen]);
 
   return (
     <div ref={rootRef} className="relative justify-self-end">
@@ -125,12 +113,14 @@ export function HeaderSearch() {
           </div>
 
           <div className="mt-2 max-h-[22rem] overflow-y-auto" aria-live="polite">
-            {!deferredQuery ? (
+            {!catalog ? (
+              <p className="px-3 py-5 text-sm text-stone-600">
+                Preparando buscador...
+              </p>
+            ) : !deferredQuery ? (
               <p className="px-3 py-5 text-sm text-stone-600">
                 Escribe un nombre, alias o ingrediente.
               </p>
-            ) : isLoading ? (
-              <p className="px-3 py-5 text-sm text-stone-600">Buscando...</p>
             ) : results.length === 0 ? (
               <p className="px-3 py-5 text-sm text-stone-600">
                 No hay coincidencias claras para &quot;{deferredQuery}&quot;.
