@@ -15,10 +15,16 @@ const spiceStrength = {
 } as const;
 
 const spiceTone = {
-  NONE: "border-stone-200 bg-stone-50 text-stone-700",
+  NONE: "border-rose-200 bg-rose-50 text-rose-700",
   MILD: "border-amber-200 bg-amber-50 text-amber-800",
-  MEDIUM: "border-orange-200 bg-orange-50 text-orange-800",
-  HIGH: "border-red-200 bg-red-50 text-red-800",
+  MEDIUM: "border-orange-300 bg-orange-50 text-orange-800",
+  HIGH: "border-red-300 bg-red-50 text-red-800",
+} as const;
+
+const flavorTone = {
+  DELICATE: "border-teal-200 bg-teal-50 text-teal-800",
+  BALANCED: "border-blue-200 bg-blue-50 text-blue-800",
+  BOLD: "border-indigo-200 bg-indigo-50 text-indigo-800",
 } as const;
 
 interface SushiIndicatorsProps {
@@ -66,7 +72,7 @@ export function SushiIndicators({ sushi, size = "sm" }: SushiIndicatorsProps) {
         <span>{sushi.rawFish ? "Pescado crudo" : "Sin pescado crudo"}</span>
       </div>
 
-      <div className={cn(chipClass, "border-stone-200 bg-white/80 text-stone-700")}>
+      <div className={cn(chipClass, flavorTone[sushi.flavorIntensity])}>
         <Gauge className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"} />
         <span>
           Sabor {flavorIntensityLabels[sushi.flavorIntensity].toLowerCase()}
