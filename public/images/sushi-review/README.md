@@ -41,3 +41,14 @@ Activated dish assets:
 
 - `public/images/sushi/`: 150 cropped dish PNGs.
 - `batch-01-approved-style.png` through `batch-13-rolls.png`: source contact sheets.
+
+## Review Pack V2
+
+Folder: `v2/`
+
+Regenerated sheets use a fixed 3 columns by 4 rows grid. Each cell is cropped directly into a fixed `1200x900` dish asset, without artificial blur or padding.
+
+Activated dish assets:
+
+- `public/images/sushi/v2/`: 150 cropped dish PNGs.
+- Seed default `imageUrl`: `/images/sushi/v2/{slug}.png`.

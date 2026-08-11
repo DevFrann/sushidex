@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Noto_Serif_JP } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -7,10 +7,9 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const notoSerifJp = Noto_Serif_JP({
+const fraunces = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${manrope.variable} ${notoSerifJp.variable} h-full antialiased`}
+      className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">{children}</body>
     </html>

@@ -64,7 +64,7 @@ function entry(input: CatalogInput): Sushi {
     texture: input.texture,
     origin: input.origin,
     popularity: input.popularity ?? 55,
-    imageUrl: input.imageUrl ?? `/images/sushi/${slug}.png`,
+    imageUrl: input.imageUrl ?? `/images/sushi/v2/${slug}.png`,
     searchTerms: buildSearchTerms(input),
   };
 }
