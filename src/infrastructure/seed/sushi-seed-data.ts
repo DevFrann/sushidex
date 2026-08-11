@@ -7,20 +7,6 @@ import type {
 
 const variationNote = "Puede variar dependiendo del restaurante.";
 
-const typeImages: Record<SushiType, string> = {
-  NIGIRI: "/images/types/nigiri.svg",
-  MAKI: "/images/types/maki.svg",
-  HOSOMAKI: "/images/types/hosomaki.svg",
-  FUTOMAKI: "/images/types/futomaki.svg",
-  URAMAKI: "/images/types/uramaki.svg",
-  TEMAKI: "/images/types/temaki.svg",
-  GUNKAN: "/images/types/gunkan.svg",
-  SASHIMI: "/images/types/sashimi.svg",
-  INARI: "/images/types/inari.svg",
-  CHIRASHI: "/images/types/chirashi.svg",
-  WESTERN_ROLLS: "/images/types/uramaki.svg",
-};
-
 type CatalogInput = {
   name: string;
   japaneseName: string | null;
@@ -78,7 +64,7 @@ function entry(input: CatalogInput): Sushi {
     texture: input.texture,
     origin: input.origin,
     popularity: input.popularity ?? 55,
-    imageUrl: input.imageUrl ?? typeImages[input.type],
+    imageUrl: input.imageUrl ?? `/images/sushi/${slug}.png`,
     searchTerms: buildSearchTerms(input),
   };
 }
