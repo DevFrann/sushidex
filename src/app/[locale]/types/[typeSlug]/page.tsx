@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getSushiByType } from "@/application/catalog/sushi-catalog";
 import { getTypeFromSlug, typeSlugs } from "@/domain/entities/sushi";
 import { isLocale } from "@/i18n/config";
-import { formatMessage, getDictionary } from "@/i18n/dictionaries";
+import { getDictionary } from "@/i18n/dictionaries";
 import { getLocalizedAlternates } from "@/i18n/metadata";
 import { SiteHeader } from "@/presentation/components/site/site-header";
 import { SushiCard } from "@/presentation/components/site/sushi-card";
@@ -77,11 +77,6 @@ export default async function TypePage({ params }: TypePageProps) {
               {dictionary.typeDescriptions[type]}
             </p>
           </div>
-          <p className="text-sm text-stone-600">
-            {formatMessage(dictionary.typePage.entries, {
-              count: sushiItems.length,
-            })}
-          </p>
         </section>
 
         <section className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">

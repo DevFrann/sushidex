@@ -90,7 +90,6 @@ const dictionaries = {
     },
     typePage: {
       badge: "Sushi type",
-      entries: "{count} entries in this category.",
       notFoundTitle: "Type not found",
     },
     notFound: {
@@ -157,7 +156,6 @@ const dictionaries = {
     },
     typePage: {
       badge: "Tipo de sushi",
-      entries: "{count} entradas en esta categoría.",
       notFoundTitle: "Tipo no encontrado",
     },
     notFound: {

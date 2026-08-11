@@ -154,7 +154,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
         {related.length > 0 ? (
           <section className="mt-12 space-y-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+              <p className="text-xl uppercase tracking-[0.1em] text-stone-500 sm:text-2xl">
                 {dictionary.detail.keepExploring}
               </p>
               <h2 className="mt-2 text-2xl font-semibold text-stone-950">
