@@ -26,18 +26,22 @@ Se mantiene una arquitectura limpia ligera, centrada en el agregado `Sushi`:
 - `src/domain`: entidad `Sushi`, tipos y reglas del dominio.
 - `src/application`: acceso al catalogo y logica de busqueda y ranking.
 - `src/infrastructure/seed`: fuente unica de datos del catalogo.
+- `src/infrastructure/localization`: adaptacion inglesa del catalogo compartido.
+- `src/i18n`: idiomas, diccionarios y metadata localizada.
 - `src/presentation`: componentes de interfaz, tarjetas y buscadores.
 - `src/app`: rutas del App Router, metadata, sitemap y robots.
 
-`next build` ejecuta los Server Components durante la compilacion y genera un archivo HTML por ruta en `out`. La busqueda principal funciona en el navegador y la cabecera carga un unico `search-index.json`, generado desde `sushi-seed-data.ts` durante el build. No hay API ni procesamiento en servidor.
+`next build` ejecuta los Server Components durante la compilacion y genera un archivo HTML por ruta e idioma en `out`. La busqueda principal funciona en el navegador y la cabecera carga el `search-index.json` estatico del idioma activo, generado desde `sushi-seed-data.ts` durante el build. No hay API ni procesamiento en servidor.
 
 ## MVP incluido
 
 - Home mobile-first centrada en la busqueda.
 - Autocomplete inmediato en cliente.
-- Fichas SEO para las 150 entradas en `/sushi/[slug]`.
-- Paginas estaticas por tipo en `/tipos/[typeSlug]`.
-- Metadata, sitemap y robots generados durante el build.
+- Ingles por defecto y version espanola mediante rutas `/en` y `/es`.
+- Selector de idioma que conserva la ficha o categoria actual.
+- Fichas SEO para las 150 entradas en `/[locale]/sushi/[slug]`.
+- Paginas estaticas por tipo en `/[locale]/types/[typeSlug]`.
+- Metadata, `hreflang`, sitemap y robots generados durante el build.
 - Busqueda tolerante a orden de palabras, alias, terminos japoneses e ingredientes.
 - Fotografias WebP de 1200x900 optimizadas para publicacion.
 
@@ -77,7 +81,7 @@ copy .env.example .env
 npm run dev
 ```
 
-La aplicacion estara disponible en `http://localhost:3000`.
+La aplicacion estara disponible en `http://localhost:3000` y redirigira a la version inglesa en `/en`. La version espanola vive en `/es`.
 
 ## Build estatico
 
@@ -112,6 +116,7 @@ Puedes conectar el repositorio desde Cloudflare y usar:
 - Variable de build: `NEXT_PUBLIC_SITE_URL=https://sushidex.app`
 
 Al ser una exportacion estatica no se necesitan secretos, Workers dinamicos ni conexiones externas.
+El archivo `public/_redirects` configura el ingles como idioma predeterminado en Cloudflare y conserva compatibilidad con las antiguas rutas sin prefijo de idioma.
 
 ## Referencias
 

@@ -7,6 +7,8 @@ import { useDeferredValue, useMemo, useState } from "react";
 import { searchSushis } from "@/application/search/search-sushis";
 import { getSearchMatchLabel } from "@/application/search/search-utils";
 import type { Sushi } from "@/domain/entities/sushi";
+import type { Locale } from "@/i18n/config";
+import { formatMessage, getDictionary } from "@/i18n/dictionaries";
 
 import { Badge } from "../ui/badge";
 import { Input } from "../ui/input";
@@ -14,6 +16,7 @@ import { Separator } from "../ui/separator";
 import { SushiCard } from "./sushi-card";
 
 interface CatalogSearchProps {
+  locale: Locale;
   popularSushi: Sushi[];
   sushiCatalog: Sushi[];
   totalSushi: number;
@@ -26,11 +29,13 @@ interface CatalogSearchProps {
 }
 
 export function CatalogSearch({
+  locale,
   popularSushi,
   sushiCatalog,
   totalSushi,
   types,
 }: CatalogSearchProps) {
+  const dictionary = getDictionary(locale);
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query.trim());
   const results = useMemo(
@@ -45,16 +50,14 @@ export function CatalogSearch({
     <div className="space-y-10">
       <section id="buscar" className="scroll-mt-28 space-y-6">
         <Badge className="w-fit bg-[var(--accent-soft)] text-stone-900">
-          Diccionario visual de sushi
+          {dictionary.home.badge}
         </Badge>
         <div className="max-w-3xl space-y-4">
           <h1 className="font-[family-name:var(--font-display)] text-4xl leading-tight text-balance text-stone-950 sm:text-5xl">
-            ¿Que sushi quieres buscar?
+            {dictionary.home.title}
           </h1>
           <p className="max-w-2xl text-base leading-7 text-stone-700 sm:text-lg">
-            Busca entre {totalSushi} platos habituales de Just Eat, Glovo, Uber
-            Eats y restaurantes japoneses, y descubre al instante qué lleva cada
-            uno.
+            {formatMessage(dictionary.home.description, { count: totalSushi })}
           </p>
         </div>
         <div className="relative">
@@ -65,7 +68,7 @@ export function CatalogSearch({
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Ejemplo: Dragon Roll, sake nigiri, gunkan..."
+              placeholder={dictionary.home.placeholder}
               className="h-14 border-0 bg-transparent px-1 shadow-none focus:border-0"
             />
           </div>
@@ -74,16 +77,22 @@ export function CatalogSearch({
               {suggestionResults.map((sushi, index) => (
                 <div key={sushi.slug}>
                   <Link
-                    href={`/sushi/${sushi.slug}`}
+                    href={`/${locale}/sushi/${sushi.slug}`}
                     className="flex items-center justify-between rounded-2xl px-3 py-3 text-sm transition-colors hover:bg-stone-50"
                   >
                     <div>
                       <p className="font-semibold text-stone-900">{sushi.name}</p>
                       <p className="mt-1 text-stone-600">
-                        {getSearchMatchLabel(sushi, deferredQuery)}
+                        {getSearchMatchLabel(
+                          sushi,
+                          deferredQuery,
+                          dictionary.search,
+                        )}
                       </p>
                     </div>
-                    <Badge variant="outline">{sushi.type.toLowerCase()}</Badge>
+                    <Badge variant="outline">
+                      {dictionary.typeLabels[sushi.type]}
+                    </Badge>
                   </Link>
                   {index < suggestionResults.length - 1 ? <Separator className="my-1" /> : null}
                 </div>
@@ -95,7 +104,7 @@ export function CatalogSearch({
           {types.map((type) => (
             <Link
               key={type.id}
-              href={`/tipos/${type.slug}`}
+              href={`/${locale}/types/${type.slug}`}
               className="rounded-full border border-stone-200 bg-white/70 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-white"
             >
               {type.label} · {type.count}
@@ -110,28 +119,27 @@ export function CatalogSearch({
             {deferredQuery ? (
               <>
                 <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
-                  Resultados
+                  {dictionary.home.results}
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold text-stone-950">
-                  Coincidencias para &quot;{deferredQuery}&quot;
+                  {dictionary.home.matches.replace("{query}", deferredQuery)}
                 </h2>
               </>
             ) : (
               <h2 className="text-xl uppercase tracking-[0.1em] text-stone-500 sm:text-2xl">
-                Populares
+                {dictionary.home.popular}
               </h2>
             )}
           </div>
         </div>
         {visibleResults.length === 0 ? (
           <div className="rounded-[28px] border border-dashed border-stone-300 bg-white/60 p-8 text-sm leading-7 text-stone-600">
-            No he encontrado coincidencias claras. Prueba con ingredientes como
-            &quot;salmon&quot;, &quot;atun&quot;, &quot;ebi&quot; o con el tipo de pieza.
+            {dictionary.home.empty}
           </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {visibleResults.map((sushi) => (
-              <SushiCard key={sushi.slug} sushi={sushi} />
+              <SushiCard key={sushi.slug} sushi={sushi} locale={locale} />
             ))}
           </div>
         )}

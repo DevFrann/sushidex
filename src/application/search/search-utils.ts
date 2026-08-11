@@ -196,7 +196,14 @@ export function scoreSushiForQuery(sushi: SushiSearchItem, query: string) {
   return score;
 }
 
-export function getSearchMatchLabel(sushi: SushiSearchItem, query: string) {
+export function getSearchMatchLabel(
+  sushi: SushiSearchItem,
+  query: string,
+  labels: { alias: string; ingredient: string } = {
+    alias: "Alias: {value}",
+    ingredient: "Ingredient: {value}",
+  },
+) {
   const normalizedQuery = normalizeSearchText(query);
   const tokens = buildSearchTokens(query);
 
@@ -214,7 +221,7 @@ export function getSearchMatchLabel(sushi: SushiSearchItem, query: string) {
   });
 
   if (aliasMatch) {
-    return `Alias: ${aliasMatch}`;
+    return labels.alias.replace("{value}", aliasMatch);
   }
 
   const ingredientMatch = sushi.ingredients.find((ingredient) => {
@@ -227,7 +234,7 @@ export function getSearchMatchLabel(sushi: SushiSearchItem, query: string) {
   });
 
   if (ingredientMatch) {
-    return `Ingrediente: ${ingredientMatch}`;
+    return labels.ingredient.replace("{value}", ingredientMatch);
   }
 
   return sushi.ingredients.slice(0, 3).join(", ");

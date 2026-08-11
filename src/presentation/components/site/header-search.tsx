@@ -9,9 +9,11 @@ import {
   getSearchMatchLabel,
   type SushiSearchItem,
 } from "@/application/search/search-utils";
-import { typeLabels } from "@/presentation/lib/labels";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
-export function HeaderSearch() {
+export function HeaderSearch({ locale }: { locale: Locale }) {
+  const dictionary = getDictionary(locale);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [catalog, setCatalog] = useState<SushiSearchItem[] | null>(null);
@@ -60,7 +62,7 @@ export function HeaderSearch() {
 
     async function loadCatalog() {
       try {
-        const response = await fetch("/search-index.json", {
+        const response = await fetch(`/${locale}/search-index.json`, {
           signal: controller.signal,
         });
 
@@ -77,7 +79,7 @@ export function HeaderSearch() {
     void loadCatalog();
 
     return () => controller.abort();
-  }, [catalog, isOpen]);
+  }, [catalog, isOpen, locale]);
 
   return (
     <div ref={rootRef} className="relative justify-self-end">
@@ -85,20 +87,20 @@ export function HeaderSearch() {
         type="button"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
-        aria-label={isOpen ? "Cerrar búsqueda" : "Buscar sushi"}
+        aria-label={isOpen ? dictionary.search.closeLabel : dictionary.search.open}
         onClick={() => setIsOpen((open) => !open)}
         className="inline-flex h-10 w-10 items-center justify-center gap-2 rounded-full border border-[#123f46]/15 bg-white/55 text-[#123f46] transition-colors hover:bg-white/85 sm:h-auto sm:w-auto sm:px-3.5 sm:py-2.5"
       >
         {isOpen ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
         <span className="hidden text-sm font-medium sm:inline">
-          {isOpen ? "Cerrar" : "Buscar sushi"}
+          {isOpen ? dictionary.search.close : dictionary.search.open}
         </span>
       </button>
 
       {isOpen ? (
         <div
           role="dialog"
-          aria-label="Buscar sushi sin salir de la página"
+          aria-label={dictionary.search.dialogLabel}
           className="absolute right-0 top-[calc(100%+1rem)] w-[min(32rem,calc(100vw-2rem))] overflow-hidden rounded-[28px] border border-[#123f46]/15 bg-[#f9fbf8]/95 p-3 shadow-[0_28px_70px_-30px_rgba(18,63,70,0.55)] backdrop-blur-xl"
         >
           <div className="flex items-center gap-3 rounded-[20px] border border-[#123f46]/15 bg-white/80 px-4">
@@ -107,7 +109,7 @@ export function HeaderSearch() {
               ref={inputRef}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Dragon Roll, salmón, nigiri..."
+              placeholder={dictionary.search.placeholder}
               className="h-12 min-w-0 flex-1 bg-transparent text-sm text-stone-900 outline-none placeholder:text-stone-500"
             />
           </div>
@@ -115,21 +117,21 @@ export function HeaderSearch() {
           <div className="mt-2 max-h-[22rem] overflow-y-auto" aria-live="polite">
             {!catalog ? (
               <p className="px-3 py-5 text-sm text-stone-600">
-                Preparando buscador...
+                {dictionary.search.loading}
               </p>
             ) : !deferredQuery ? (
               <p className="px-3 py-5 text-sm text-stone-600">
-                Escribe un nombre, alias o ingrediente.
+                {dictionary.search.prompt}
               </p>
             ) : results.length === 0 ? (
               <p className="px-3 py-5 text-sm text-stone-600">
-                No hay coincidencias claras para &quot;{deferredQuery}&quot;.
+                {dictionary.search.noMatches.replace("{query}", deferredQuery)}
               </p>
             ) : (
               results.map((sushi) => (
                 <Link
                   key={sushi.slug}
-                  href={`/sushi/${sushi.slug}`}
+                  href={`/${locale}/sushi/${sushi.slug}`}
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between gap-4 rounded-[18px] px-3 py-3 transition-colors hover:bg-[#e8f2ef]"
                 >
@@ -138,11 +140,11 @@ export function HeaderSearch() {
                       {sushi.name}
                     </p>
                     <p className="mt-1 truncate text-xs text-stone-600">
-                      {getSearchMatchLabel(sushi, deferredQuery)}
+                      {getSearchMatchLabel(sushi, deferredQuery, dictionary.search)}
                     </p>
                   </div>
                   <span className="shrink-0 rounded-full border border-[#123f46]/15 bg-white/70 px-2.5 py-1 text-xs text-[#123f46]">
-                    {typeLabels[sushi.type]}
+                    {dictionary.typeLabels[sushi.type]}
                   </span>
                 </Link>
               ))

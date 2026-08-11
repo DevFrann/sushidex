@@ -1,0 +1,3 @@
+/ /en/ 301
+/sushi/* /en/sushi/:splat 301
+/tipos/* /es/types/:splat 301

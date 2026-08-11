@@ -1,10 +1,8 @@
 import { CookingPot, Fish, Flame, Gauge } from "lucide-react";
 
 import type { Sushi } from "@/domain/entities/sushi";
-import {
-  flavorIntensityLabels,
-  spicyLevelLabels,
-} from "@/presentation/lib/labels";
+import type { Locale } from "@/i18n/config";
+import { formatMessage, getDictionary } from "@/i18n/dictionaries";
 import { cn } from "@/presentation/lib/utils";
 
 const spiceStrength = {
@@ -29,11 +27,17 @@ const flavorTone = {
 
 interface SushiIndicatorsProps {
   sushi: Pick<Sushi, "spicyLevel" | "rawFish" | "flavorIntensity">;
+  locale: Locale;
   size?: "sm" | "md";
 }
 
-export function SushiIndicators({ sushi, size = "sm" }: SushiIndicatorsProps) {
+export function SushiIndicators({ sushi, locale, size = "sm" }: SushiIndicatorsProps) {
+  const dictionary = getDictionary(locale);
   const activeFlames = spiceStrength[sushi.spicyLevel];
+  const flavorLabel = formatMessage(dictionary.indicators.flavor, {
+    value:
+      dictionary.indicators.flavorIntensity[sushi.flavorIntensity].toLowerCase(),
+  }).replace(/^./, (letter) => letter.toUpperCase());
   const chipClass = cn(
     "inline-flex items-center gap-2 rounded-full border font-medium",
     size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2 text-sm",
@@ -53,7 +57,7 @@ export function SushiIndicators({ sushi, size = "sm" }: SushiIndicatorsProps) {
             />
           ))}
         </span>
-        <span>{spicyLevelLabels[sushi.spicyLevel]}</span>
+        <span>{dictionary.indicators.spicy[sushi.spicyLevel]}</span>
       </div>
 
       <div
@@ -69,14 +73,16 @@ export function SushiIndicators({ sushi, size = "sm" }: SushiIndicatorsProps) {
         ) : (
           <CookingPot className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"} />
         )}
-        <span>{sushi.rawFish ? "Pescado crudo" : "Sin pescado crudo"}</span>
+        <span>
+          {sushi.rawFish
+            ? dictionary.indicators.rawFish
+            : dictionary.indicators.noRawFish}
+        </span>
       </div>
 
       <div className={cn(chipClass, flavorTone[sushi.flavorIntensity])}>
         <Gauge className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"} />
-        <span>
-          Sabor {flavorIntensityLabels[sushi.flavorIntensity].toLowerCase()}
-        </span>
+        <span>{flavorLabel}</span>
       </div>
     </div>
   );

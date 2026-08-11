@@ -48,7 +48,7 @@ export const typeSlugs: Record<SushiType, string> = {
   SASHIMI: "sashimi",
   INARI: "inari",
   CHIRASHI: "chirashi",
-  WESTERN_ROLLS: "rolls-occidentales",
+  WESTERN_ROLLS: "western-rolls",
 };
 
 export const typeLabels: Record<SushiType, string> = {
