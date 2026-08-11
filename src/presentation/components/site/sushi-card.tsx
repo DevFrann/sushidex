@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { Sushi } from "@/domain/entities/sushi";
-import { flavorIntensityLabels, spicyLevelLabels, typeLabels } from "@/presentation/lib/labels";
+import { typeLabels } from "@/presentation/lib/labels";
 
-import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
+import { SushiIndicators } from "./sushi-indicators";
 
 export function SushiCard({ sushi }: { sushi: Sushi }) {
   return (
@@ -31,15 +31,7 @@ export function SushiCard({ sushi }: { sushi: Sushi }) {
         </div>
         <CardContent className="space-y-4">
           <p className="text-sm leading-6 text-stone-700">{sushi.shortDescription}</p>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">{spicyLevelLabels[sushi.spicyLevel]}</Badge>
-            <Badge variant="outline">
-              {sushi.rawFish ? "Con pescado crudo" : "Sin pescado crudo"}
-            </Badge>
-            <Badge variant="secondary">
-              Sabor {flavorIntensityLabels[sushi.flavorIntensity].toLowerCase()}
-            </Badge>
-          </div>
+          <SushiIndicators sushi={sushi} />
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-stone-500">
               Ingredientes habituales

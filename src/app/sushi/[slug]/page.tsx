@@ -5,14 +5,13 @@ import { notFound } from "next/navigation";
 
 import { getSushiRepository } from "@/infrastructure/repositories";
 import {
-  flavorIntensityLabels,
-  spicyLevelLabels,
   typeLabels,
   typeSlugs,
 } from "@/presentation/lib/labels";
 
 import { Badge } from "@/presentation/components/ui/badge";
 import { Separator } from "@/presentation/components/ui/separator";
+import { SushiIndicators } from "@/presentation/components/site/sushi-indicators";
 import { SushiCard } from "@/presentation/components/site/sushi-card";
 
 interface SushiPageProps {
@@ -113,15 +112,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
                 <p className="mt-3 text-sm leading-7 text-stone-700">{sushi.texture}</p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <Badge variant="outline">{spicyLevelLabels[sushi.spicyLevel]}</Badge>
-              <Badge variant="outline">
-                {sushi.rawFish ? "Contiene pescado crudo" : "No contiene pescado crudo"}
-              </Badge>
-              <Badge variant="secondary">
-                Sabor {flavorIntensityLabels[sushi.flavorIntensity].toLowerCase()}
-              </Badge>
-            </div>
+            <SushiIndicators sushi={sushi} size="md" />
             {sushi.aliases.length > 0 ? (
               <div className="rounded-[28px] border border-stone-200 bg-white/80 p-5">
                 <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
