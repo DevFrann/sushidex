@@ -58,7 +58,7 @@ const dictionaries = {
       badge: "Visual sushi dictionary",
       title: "Find your sushi",
       description: "Search {count} popular dishes from delivery apps and Japanese restaurants, and instantly discover what each one contains.",
-      placeholder: "Try: Dragon Roll, sake nigiri, gunkan...",
+      placeholder: "Dragon Roll, nigiri...",
       popular: "Popular",
       results: "Results",
       matches: "Matches for “{query}”",
@@ -97,6 +97,10 @@ const dictionaries = {
       description: "The address may be incorrect or the item may not be part of the current catalog.",
       action: "Back to search",
     },
+    footer: {
+      brandLine: "A Lamarbis project",
+      description: "Visual sushi dictionary for faster menu decisions.",
+    },
     indicators: {
       rawFish: "Raw fish",
       noRawFish: "No raw fish",
@@ -124,7 +128,7 @@ const dictionaries = {
       badge: "Diccionario visual de sushi",
       title: "Encuentra tu sushi",
       description: "Busca entre {count} platos habituales de apps de delivery y restaurantes japoneses, y descubre al instante qué lleva cada uno.",
-      placeholder: "Ejemplo: Dragon Roll, sake nigiri, gunkan...",
+      placeholder: "Dragon Roll, nigiri...",
       popular: "Populares",
       results: "Resultados",
       matches: "Coincidencias para “{query}”",
@@ -162,6 +166,10 @@ const dictionaries = {
       title: "Esta página no existe",
       description: "Puede que la dirección esté mal escrita o que la pieza no forme parte del catálogo actual.",
       action: "Volver al buscador",
+    },
+    footer: {
+      brandLine: "Un proyecto de Lamarbis",
+      description: "Diccionario visual de sushi para decidir más rápido en la carta.",
     },
     indicators: {
       rawFish: "Pescado crudo",

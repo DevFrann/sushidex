@@ -101,7 +101,7 @@ export function HeaderSearch({ locale }: { locale: Locale }) {
         <div
           role="dialog"
           aria-label={dictionary.search.dialogLabel}
-          className="absolute right-0 top-[calc(100%+1rem)] w-[min(32rem,calc(100vw-2rem))] overflow-hidden rounded-[28px] border border-[#123f46]/15 bg-[#f9fbf8]/95 p-3 shadow-[0_28px_70px_-30px_rgba(18,63,70,0.55)] backdrop-blur-xl"
+          className="fixed left-4 right-4 top-[6.5rem] overflow-hidden rounded-[28px] border border-[#123f46]/15 bg-[#f9fbf8]/95 p-3 shadow-[0_28px_70px_-30px_rgba(18,63,70,0.55)] backdrop-blur-xl sm:absolute sm:left-auto sm:right-0 sm:top-[calc(100%+1rem)] sm:w-[min(32rem,calc(100vw-2rem))]"
         >
           <div className="flex items-center gap-3 rounded-[20px] border border-[#123f46]/15 bg-white/80 px-4">
             <Search className="h-4 w-4 shrink-0 text-[#123f46]" />

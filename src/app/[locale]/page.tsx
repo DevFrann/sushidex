@@ -20,7 +20,7 @@ export default async function HomePage({
     getHomeCatalog(locale);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <SiteHeader locale={locale} showSearch={false} />
       <div className="mt-4 rounded-[36px] border border-white/60 bg-white/55 p-6 shadow-soft backdrop-blur sm:p-8 lg:p-10">
         <CatalogSearch

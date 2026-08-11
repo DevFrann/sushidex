@@ -5,6 +5,7 @@ import { fraunces, manrope } from "../fonts";
 import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocalizedAlternates } from "@/i18n/metadata";
+import { SiteFooter } from "@/presentation/components/site/site-footer";
 
 import "../globals.css";
 
@@ -62,7 +63,12 @@ export default async function LocaleLayout({
       lang={locale}
       className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-background text-foreground">{children}</body>
+      <body className="min-h-full bg-background text-foreground">
+        <div className="flex min-h-screen flex-col">
+          {children}
+          <SiteFooter locale={locale} />
+        </div>
+      </body>
     </html>
   );
 }

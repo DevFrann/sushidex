@@ -73,7 +73,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
     .slice(0, 3);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <SiteHeader
         locale={locale}
         backHref={`/${locale}/types/${typeSlugs[sushi.type]}`}
@@ -90,6 +90,10 @@ export default async function SushiPage({ params }: SushiPageProps) {
             <h1 className="font-[family-name:var(--font-display)] text-4xl leading-tight text-stone-950 sm:text-5xl">
               {sushi.name}
             </h1>
+            <div className="lg:hidden">
+              <DishImage imageUrl={sushi.imageUrl} name={sushi.name} />
+            </div>
+            <SushiIndicators sushi={sushi} locale={locale} size="md" />
             <p className="max-w-2xl text-base leading-8 text-stone-700 sm:text-lg">
               {sushi.shortDescription}
             </p>
@@ -103,7 +107,6 @@ export default async function SushiPage({ params }: SushiPageProps) {
                 value={sushi.texture}
               />
             </div>
-            <SushiIndicators sushi={sushi} locale={locale} size="md" />
             {sushi.aliases.length > 0 ? (
               <div className="rounded-[28px] border border-stone-200 bg-white/80 p-5">
                 <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
@@ -121,16 +124,8 @@ export default async function SushiPage({ params }: SushiPageProps) {
           </div>
 
           <aside className="space-y-5">
-            <div className="relative overflow-hidden rounded-[32px] border border-stone-200 bg-stone-100">
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src={sushi.imageUrl}
-                  alt={sushi.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
-              </div>
+            <div className="hidden lg:block">
+              <DishImage imageUrl={sushi.imageUrl} name={sushi.name} />
             </div>
             <div className="rounded-[32px] border border-stone-200 bg-white/80 p-5">
               <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
@@ -170,6 +165,22 @@ export default async function SushiPage({ params }: SushiPageProps) {
         ) : null}
       </div>
     </main>
+  );
+}
+
+function DishImage({ imageUrl, name }: { imageUrl: string; name: string }) {
+  return (
+    <div className="relative overflow-hidden rounded-[32px] border border-stone-200 bg-stone-100">
+      <div className="relative aspect-[4/3]">
+        <Image
+          src={imageUrl}
+          alt={name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 40vw"
+        />
+      </div>
+    </div>
   );
 }
 

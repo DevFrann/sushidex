@@ -25,7 +25,7 @@ export function SiteHeader({
   const dictionary = getDictionary(locale);
 
   return (
-    <header className="site-header-surface sticky top-3 z-50 grid min-h-[4.75rem] grid-cols-[auto_1fr_auto] items-center gap-2 rounded-[28px] border border-[#123f46]/15 px-3 backdrop-blur-xl sm:gap-4 sm:px-5">
+    <header className="site-header-surface sticky top-3 z-50 grid min-h-[4.75rem] grid-cols-[auto_auto_1fr] items-center gap-2 rounded-[28px] border border-[#123f46]/15 px-3 backdrop-blur-xl sm:gap-4 sm:px-5 md:grid-cols-[auto_1fr_auto]">
       {backHref ? (
         <Link
           href={backHref}
@@ -44,9 +44,9 @@ export function SiteHeader({
       <Link
         href={localizedPath(locale)}
         aria-label={dictionary.navigation.home}
-        className="absolute left-1/2 inline-flex -translate-x-1/2 items-center gap-2 font-semibold tracking-[0.08em] text-[#123f46] transition-opacity hover:opacity-80"
+        className="inline-flex items-center gap-2 font-semibold tracking-[0.08em] text-[#123f46] transition-opacity hover:opacity-80 md:absolute md:left-1/2 md:-translate-x-1/2"
       >
-        <SushiDexLogo className="h-10 w-10 sm:h-11 sm:w-11" />
+        <SushiDexLogo className="h-9 w-9 sm:h-11 sm:w-11" />
         <span className="hidden sm:inline">SushiDex</span>
       </Link>
 

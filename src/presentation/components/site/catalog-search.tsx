@@ -44,7 +44,7 @@ export function CatalogSearch({
   );
 
   const visibleResults = deferredQuery ? results : popularSushi;
-  const suggestionResults = useMemo(() => results.slice(0, 5), [results]);
+  const suggestionResults = useMemo(() => results.slice(0, 4), [results]);
 
   return (
     <div className="space-y-10">
@@ -100,12 +100,12 @@ export function CatalogSearch({
             </div>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2.5 sm:gap-3">
           {types.map((type) => (
             <Link
               key={type.id}
               href={`/${locale}/types/${type.slug}`}
-              className="rounded-full border border-stone-200 bg-white/70 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-white"
+              className="rounded-full border border-stone-200 bg-white/70 px-3.5 py-2 text-sm text-stone-700 transition-colors hover:bg-white sm:px-4"
             >
               {type.label} · {type.count}
             </Link>
