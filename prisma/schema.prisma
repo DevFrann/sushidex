@@ -18,6 +18,7 @@ enum SushiType {
   SASHIMI
   INARI
   CHIRASHI
+  WESTERN_ROLLS
 }
 
 enum SpicyLevel {
@@ -38,7 +39,7 @@ model Sushi {
   name            String
   slug            String          @unique
   japaneseName    String?
-  description     String          @db.Text
+  shortDescription String          @db.Text
   type            SushiType
   ingredients     String[]
   aliases         String[]

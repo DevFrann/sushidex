@@ -8,7 +8,7 @@ export function mapPrismaSushiToDomain(model: PrismaSushi): Sushi {
     name: model.name,
     slug: model.slug,
     japaneseName: model.japaneseName,
-    description: model.description,
+    shortDescription: model.shortDescription,
     type: model.type,
     ingredients: model.ingredients,
     aliases: model.aliases,

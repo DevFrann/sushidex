@@ -46,7 +46,7 @@ Se ha mantenido una arquitectura limpia ligera, centrada en un unico agregado `S
   - `/tipos/uramaki`
   - `/tipos/temaki`
 - Metadata dinamica y sitemap
-- Seed inicial con 54 entradas comunes en menus occidentales
+- Seed inicial con 150 entradas comunes en cartas de restaurantes japoneses en Espana y Europa
 - Busqueda tolerante a:
   - orden distinto de palabras
   - alias ingles/espanol
@@ -58,8 +58,9 @@ Se ha mantenido una arquitectura limpia ligera, centrada en un unico agregado `S
 La fuente inicial vive en `src/infrastructure/seed/sushi-seed-data.ts`.
 
 - El mismo catalogo alimenta el fallback estatico del MVP y el seed de Prisma.
+- El catalogo se divide en Nigiri, Maki, Hosomaki, Futomaki, Uramaki, Temaki, Gunkan, Sashimi, Inari, Chirashi y Rolls occidentales.
 - Cuando una composicion no es universal, se marca explicitamente con:
-  `Los ingredientes pueden variar dependiendo del restaurante.`
+  `Puede variar dependiendo del restaurante.`
 
 ## Ejecucion local
 

@@ -43,7 +43,7 @@ export async function generateMetadata({
 
   return {
     title: sushi.name,
-    description: `${sushi.description} Ingredientes habituales: ${sushi.ingredients.join(", ")}.`,
+    description: `${sushi.shortDescription} Ingredientes habituales: ${sushi.ingredients.join(", ")}.`,
     alternates: {
       canonical: `/sushi/${sushi.slug}`,
     },
@@ -95,7 +95,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
               ) : null}
             </div>
             <p className="max-w-2xl text-base leading-8 text-stone-700 sm:text-lg">
-              {sushi.description}
+              {sushi.shortDescription}
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-[28px] border border-stone-200 bg-white/80 p-5">

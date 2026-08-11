@@ -30,7 +30,7 @@ export function SushiCard({ sushi }: { sushi: Sushi }) {
           </div>
         </div>
         <CardContent className="space-y-4">
-          <p className="text-sm leading-6 text-stone-700">{sushi.description}</p>
+          <p className="text-sm leading-6 text-stone-700">{sushi.shortDescription}</p>
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline">{spicyLevelLabels[sushi.spicyLevel]}</Badge>
             <Badge variant="outline">

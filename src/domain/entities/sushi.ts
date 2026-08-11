@@ -9,6 +9,7 @@ export const sushiTypes = [
   "SASHIMI",
   "INARI",
   "CHIRASHI",
+  "WESTERN_ROLLS",
 ] as const;
 
 export const spicyLevels = ["NONE", "MILD", "MEDIUM", "HIGH"] as const;
@@ -23,7 +24,7 @@ export interface Sushi {
   name: string;
   slug: string;
   japaneseName: string | null;
-  description: string;
+  shortDescription: string;
   type: SushiType;
   ingredients: string[];
   aliases: string[];
@@ -48,6 +49,7 @@ export const typeSlugs: Record<SushiType, string> = {
   SASHIMI: "sashimi",
   INARI: "inari",
   CHIRASHI: "chirashi",
+  WESTERN_ROLLS: "rolls-occidentales",
 };
 
 export const typeLabels: Record<SushiType, string> = {
@@ -61,6 +63,7 @@ export const typeLabels: Record<SushiType, string> = {
   SASHIMI: "Sashimi",
   INARI: "Inari",
   CHIRASHI: "Chirashi",
+  WESTERN_ROLLS: "Rolls occidentales",
 };
 
 export const spicyLevelLabels: Record<SpicyLevel, string> = {
@@ -97,6 +100,8 @@ export const typeDescriptions: Record<SushiType, string> = {
     "Bolsa de tofu frito sazonado rellena normalmente de arroz. Tiene un sabor dulce-salado muy reconocible.",
   CHIRASHI:
     "Bol de arroz con diferentes cortes de pescado y toppings por encima. Se acerca más a un plato completo que a una pieza individual.",
+  WESTERN_ROLLS:
+    "Rolls de estilo occidental o fusion con nombres comerciales. Su composicion puede cambiar bastante segun el restaurante.",
 };
 
 export function isSushiType(value: string): value is SushiType {
