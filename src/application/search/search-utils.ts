@@ -1,7 +1,7 @@
 import type { Sushi } from "@/domain/entities/sushi";
 
 const synonymGroups = [
-  ["salmon", "sake", "salmones", "salmon"],
+  ["salmon", "sake", "salmones"],
   ["tuna", "atun", "maguro"],
   ["shrimp", "ebi", "gamba", "langostino", "camaron"],
   ["eel", "unagi", "anguila"],
@@ -13,7 +13,6 @@ const synonymGroups = [
   ["crab", "cangrejo", "kani"],
   ["seaweed", "wakame", "alga"],
   ["spicy", "picante"],
-  ["roll", "maki"],
 ];
 
 const synonymMap = new Map<string, string[]>();
@@ -39,7 +38,25 @@ export function buildSearchTokens(query: string) {
     .split(" ")
     .filter(Boolean);
 
-  return [...new Set(baseTokens.flatMap((token) => synonymMap.get(token) ?? [token]))];
+  return [
+    ...new Set(baseTokens.flatMap((token) => synonymMap.get(token) ?? [token])),
+  ];
+}
+
+function buildSearchGroups(query: string) {
+  return normalizeSearchText(query)
+    .split(" ")
+    .filter(Boolean)
+    .map((token) => [...new Set(synonymMap.get(token) ?? [token])]);
+}
+
+function getSearchableFields(sushi: Sushi) {
+  return [
+    sushi.name,
+    sushi.japaneseName,
+    ...sushi.aliases,
+    ...sushi.ingredients,
+  ].filter((field): field is string => Boolean(field));
 }
 
 function bigrams(value: string) {
@@ -81,6 +98,13 @@ function diceCoefficient(left: string, right: string) {
   return (2 * matches) / (leftBigrams.length + rightBigrams.length);
 }
 
+function fieldMatchesToken(field: string, token: string) {
+  return (
+    field.includes(token) ||
+    (token.length >= 4 && diceCoefficient(token, field) >= 0.82)
+  );
+}
+
 export function scoreSushiForQuery(sushi: Sushi, query: string) {
   const normalizedQuery = normalizeSearchText(query);
 
@@ -88,29 +112,34 @@ export function scoreSushiForQuery(sushi: Sushi, query: string) {
     return 0;
   }
 
-  const tokens = buildSearchTokens(query);
-  const searchable = normalizeSearchText(
-    [
-      sushi.name,
-      sushi.japaneseName,
-      sushi.searchTerms,
-      sushi.type,
-      sushi.description,
-      ...sushi.aliases,
-      ...sushi.ingredients,
-    ]
-      .filter(Boolean)
-      .join(" "),
-  );
-
+  const tokenGroups = buildSearchGroups(query);
+  const tokens = tokenGroups.flat();
+  const searchableFields = getSearchableFields(sushi).map(normalizeSearchText);
+  const searchable = searchableFields.join(" ");
   const normalizedName = normalizeSearchText(sushi.name);
+  const normalizedJapaneseName = sushi.japaneseName
+    ? normalizeSearchText(sushi.japaneseName)
+    : "";
   const normalizedAliases = sushi.aliases.map(normalizeSearchText);
   const normalizedIngredients = sushi.ingredients.map(normalizeSearchText);
+  const hasEveryQueryPart = tokenGroups.every((group) =>
+    group.some((token) =>
+      searchableFields.some((field) => fieldMatchesToken(field, token)),
+    ),
+  );
+
+  if (!hasEveryQueryPart) {
+    return 0;
+  }
 
   let score = 0;
 
   if (normalizedName === normalizedQuery) {
     score += 60;
+  }
+
+  if (normalizedJapaneseName === normalizedQuery) {
+    score += 45;
   }
 
   if (normalizedAliases.includes(normalizedQuery)) {
@@ -126,6 +155,10 @@ export function scoreSushiForQuery(sushi: Sushi, query: string) {
       score += 12;
     }
 
+    if (normalizedJapaneseName.includes(token)) {
+      score += 10;
+    }
+
     if (normalizedAliases.some((alias) => alias.includes(token))) {
       score += 9;
     }
@@ -139,8 +172,52 @@ export function scoreSushiForQuery(sushi: Sushi, query: string) {
     }
   }
 
-  score += Math.round(diceCoefficient(normalizedQuery, searchable) * 20);
+  const bestFieldSimilarity = Math.max(
+    ...searchableFields.map((field) => diceCoefficient(normalizedQuery, field)),
+  );
+
+  if (normalizedQuery.length >= 4 && bestFieldSimilarity >= 0.72) {
+    score += Math.round(bestFieldSimilarity * 20);
+  }
+
   score += Math.round((sushi.popularity / 100) * 5);
 
   return score;
+}
+
+export function getSearchMatchLabel(sushi: Sushi, query: string) {
+  const normalizedQuery = normalizeSearchText(query);
+  const tokens = buildSearchTokens(query);
+
+  if (!normalizedQuery) {
+    return sushi.japaneseName ?? sushi.ingredients.slice(0, 3).join(", ");
+  }
+
+  const aliasMatch = sushi.aliases.find((alias) => {
+    const normalizedAlias = normalizeSearchText(alias);
+
+    return (
+      normalizedAlias.includes(normalizedQuery) ||
+      tokens.some((token) => normalizedAlias.includes(token))
+    );
+  });
+
+  if (aliasMatch) {
+    return `Alias: ${aliasMatch}`;
+  }
+
+  const ingredientMatch = sushi.ingredients.find((ingredient) => {
+    const normalizedIngredient = normalizeSearchText(ingredient);
+
+    return (
+      normalizedIngredient.includes(normalizedQuery) ||
+      tokens.some((token) => normalizedIngredient.includes(token))
+    );
+  });
+
+  if (ingredientMatch) {
+    return `Ingrediente: ${ingredientMatch}`;
+  }
+
+  return sushi.japaneseName ?? sushi.ingredients.slice(0, 3).join(", ");
 }

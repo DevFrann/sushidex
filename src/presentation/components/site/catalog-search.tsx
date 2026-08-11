@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 
+import { getSearchMatchLabel } from "@/application/search/search-utils";
 import type { Sushi } from "@/domain/entities/sushi";
 
 import { Badge } from "../ui/badge";
@@ -117,7 +118,7 @@ export function CatalogSearch({
                     <div>
                       <p className="font-semibold text-stone-900">{sushi.name}</p>
                       <p className="mt-1 text-stone-600">
-                        {sushi.japaneseName ?? sushi.ingredients.slice(0, 3).join(", ")}
+                        {getSearchMatchLabel(sushi, deferredQuery)}
                       </p>
                     </div>
                     <Badge variant="outline">{sushi.type.toLowerCase()}</Badge>
