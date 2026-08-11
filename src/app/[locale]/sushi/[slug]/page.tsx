@@ -16,6 +16,7 @@ import { SushiCard } from "@/presentation/components/site/sushi-card";
 import { SushiIndicators } from "@/presentation/components/site/sushi-indicators";
 import { Badge } from "@/presentation/components/ui/badge";
 import { Separator } from "@/presentation/components/ui/separator";
+import { capitalizeFirstLetter } from "@/presentation/lib/utils";
 
 interface SushiPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -100,7 +101,7 @@ export default async function SushiPage({ params }: SushiPageProps) {
             <div className="grid gap-3 sm:grid-cols-2">
               <InfoBlock
                 label={dictionary.detail.ingredients}
-                value={sushi.ingredients.join(", ")}
+                value={capitalizeFirstLetter(sushi.ingredients.join(", "))}
               />
               <InfoBlock
                 label={dictionary.detail.texture}

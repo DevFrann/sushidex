@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Sushi } from "@/domain/entities/sushi";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { capitalizeFirstLetter } from "@/presentation/lib/utils";
 
 import { Card, CardContent } from "../ui/card";
 import { SushiIndicators } from "./sushi-indicators";
@@ -38,7 +39,7 @@ export function SushiCard({ sushi, locale }: { sushi: Sushi; locale: Locale }) {
               {dictionary.detail.ingredients}
             </p>
             <p className="mt-2 text-sm text-stone-700">
-              {sushi.ingredients.join(", ")}
+              {capitalizeFirstLetter(sushi.ingredients.join(", "))}
             </p>
           </div>
         </CardContent>
