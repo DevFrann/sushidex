@@ -91,8 +91,9 @@ export function CatalogSearch({
             ¿Que sushi quieres buscar?
           </h1>
           <p className="max-w-2xl text-base leading-7 text-stone-700 sm:text-lg">
-            Busca nombres que aparecen en Just Eat, Glovo, Uber Eats o en la web
-            del restaurante y entiende al instante que lleva cada pieza.
+            Busca entre {totalSushi} platos habituales de Just Eat, Glovo, Uber
+            Eats y restaurantes japoneses, y descubre al instante qué lleva cada
+            uno.
           </p>
         </div>
         <div className="relative">
@@ -140,9 +141,6 @@ export function CatalogSearch({
             </Link>
           ))}
         </div>
-        <p className="text-sm text-stone-600">
-          {totalSushi}+ entradas iniciales entre nigiri, maki, uramaki, temaki y mas.
-        </p>
       </section>
 
       <section className="space-y-6">
@@ -158,7 +156,7 @@ export function CatalogSearch({
                 </h2>
               </>
             ) : (
-              <h2 className="text-xs uppercase tracking-[0.22em] text-stone-500">
+              <h2 className="text-xl uppercase tracking-[0.1em] text-stone-500 sm:text-2xl">
                 Populares
               </h2>
             )}
